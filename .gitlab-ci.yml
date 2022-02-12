@@ -1,0 +1,86 @@
+services:
+  - name: docker:dind
+    # explicitly disable tls to avoid docker startup interruption
+    command: ["--tls=false"]
+
+include:
+  - template: Container-Scanning.gitlab-ci.yml
+  - template: Secret-Detection.gitlab-ci.yml
+
+
+variables:
+  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_DRIVER: overlay2
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+  DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/ms-title:${CI_COMMIT_SHORT_SHA}
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+
+stages:
+  - test
+  - build
+  - package
+  - secure
+  - deploy
+
+test-backend:
+ image: maven:3.6.3-jdk-11
+ stage: test
+ script: 
+    - mvn compile test
+
+build-backend:
+  image: maven:3.6.3-jdk-11
+  stage: build
+  script:
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target/ms-certidigital-title-0.0.1-SNAPSHOT.jar
+    expire_in: 1 hour
+
+package:
+  services:
+    - docker:dind
+  stage: package
+  image:
+    name: docker:stable
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f Dockerfile -t ${DOCKER_IMAGE} .
+    - docker push ${DOCKER_IMAGE}
+
+container_scanning:
+  stage: secure
+  variables:
+      GIT_STRATEGY: fetch
+      KLAR_TRACE: "false"
+      CLAIR_TRACE: "false"
+  artifacts:
+    reports:
+      container_scanning: gl-container-scanning-report.json
+      
+secret_detection:
+  stage: secure
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
+  artifacts:
+    reports:
+      secret_detection: gl-secret-detection-report.json
+
+deploy:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  script:
+    - kubectl config use-context vallegrande/PRS191_certidigital:minikube
+    - cd manifest
+    - sed -i 's/<VERSION>/'${CI_COMMIT_SHORT_SHA}'/g' deployment.yaml
+    - kubectl apply -f .

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: title-service
+  namespace: gitlab-kubernetes-agent
+spec:
+  selector:
+      matchLabels:
+        app: title-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: title-service
+    spec:
+      containers:
+        - name: title-service
+          image: registry.gitlab.com/vallegrande/prs191_certidigital/ms-title:<VERSION>
+          ports:
+          - containerPort: 8080
+      imagePullSecrets:
+        - name: registry-credentials
