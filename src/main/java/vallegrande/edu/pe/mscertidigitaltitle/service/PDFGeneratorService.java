@@ -1,21 +1,35 @@
 package vallegrande.edu.pe.mscertidigitaltitle.service;
 
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
+import org.apache.tomcat.util.http.fileupload.MultipartStream;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import vallegrande.edu.pe.mscertidigitaltitle.model.Student;
+import vallegrande.edu.pe.mscertidigitaltitle.model.Title;
+import vallegrande.edu.pe.mscertidigitaltitle.repository.StudentRepository;
+import vallegrande.edu.pe.mscertidigitaltitle.repository.TitleRepository;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Locale;
 
+import static java.lang.String.valueOf;
+
 @Service
 public class PDFGeneratorService {
-    public Document view(HttpServletResponse response, RestTemplate restTemplate, String dni) throws IOException {
-        Document document1;
+    @Autowired
+    TitleRepository titleRepository;
+
+    public void view(HttpServletResponse response, RestTemplate restTemplate, String dni) throws IOException {
+        Document document;
         ResponseEntity<Student> request =
                 restTemplate.getForEntity(
                         "http://localhost:8080/student/dni/" + dni,
@@ -24,7 +38,7 @@ public class PDFGeneratorService {
         if (students.getStatus().equals("Aprobado")) {
 //        Student students = new Student();
 
-            Document document = new Document(PageSize.A5.rotate(), 35, 30, 50, 40);
+            document = new Document(PageSize.A5.rotate(), 35, 30, 50, 40);
             PdfWriter.getInstance(document, response.getOutputStream());
 
             document.open();
@@ -100,11 +114,17 @@ public class PDFGeneratorService {
             document.add(paragraph);
             document.add(paragraph2);
             document.add(paragraph3);
+            this.saveTitle(dni, valueOf(document));
             document.close();
-            document1 = document;
-        } else {
-            return null;
+        }else{
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-        return document1;
+    }
+
+    public void saveTitle(String dni,String document){
+        Title title = new Title();
+        title.setDescription(dni);
+        title.setDocument(document);
+        titleRepository.save(title);
     }
 }

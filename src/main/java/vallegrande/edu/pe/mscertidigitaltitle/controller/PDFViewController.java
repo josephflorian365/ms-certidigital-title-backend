@@ -26,7 +26,7 @@ public class PDFViewController {
     }
 
     @GetMapping("/pdf/generate/{dni}")
-    public Document generatePDF(HttpServletResponse response, @PathVariable String dni) throws IOException {
+    public void generatePDF(HttpServletResponse response, @PathVariable String dni) throws IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -35,6 +35,6 @@ public class PDFViewController {
         String headerValue = "inline; filename=pdf_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        return this.pdfGeneratorService.view(response,restTemplate,dni);
+        this.pdfGeneratorService.view(response,restTemplate,dni);
     }
 }
