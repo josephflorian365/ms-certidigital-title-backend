@@ -1,0 +1,6 @@
+projectKey=ms-cetidigital-title
+serverUrl=http://localhost:9000
+serverVersion=9.3.0.51899
+dashboardUrl=http://localhost:9000/dashboard?id=ms-cetidigital-title
+ceTaskId=AX9R1QSbaG2XQ5_aiIqT
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AX9R1QSbaG2XQ5_aiIqT

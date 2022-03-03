@@ -32,7 +32,7 @@ public class PDFGeneratorService {
         Document document;
         ResponseEntity<Student> request =
                 restTemplate.getForEntity(
-                        "http://localhost:8080/student/dni/" + dni,
+                        "http://localhost:8090/student/dni/" + dni,
                         Student.class);
         Student students = request.getBody();
         if (students.getStatus().equals("Aprobado")) {
@@ -114,7 +114,7 @@ public class PDFGeneratorService {
             document.add(paragraph);
             document.add(paragraph2);
             document.add(paragraph3);
-            this.saveTitle(dni, valueOf(document));
+            saveTitle(dni, valueOf(document));
             document.close();
         }else{
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
