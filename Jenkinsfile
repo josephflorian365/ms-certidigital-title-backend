@@ -4,31 +4,26 @@ pipeline {
         pollSCM('* * * * *')
     }
     stages {
-        stage("Compile") {
+        stage ('Compile Stage') {
+
             steps {
-                sh "./mvn compileJava"
+                withMaven(maven : 'apache-maven-3.6.1') {
+                    bat 'mvn clean compile'
+                }
             }
         }
-        stage("Unit test") {
+        stage ('Testing Stage') {
+
             steps {
-                sh "./mvn test"
+                withMaven(maven : 'apache-maven-3.6.1') {
+                    bat 'mvn test'
+                }
             }
         }
-        stage("Code coverage") {
+        stage ('Install Stage') {
             steps {
-        	    sh "./mvn jacocoTestReport"
-        	 	publishHTML (target: [
-         	        reportDir: 'build/reports/jacoco/test/html',
-         			reportFiles: 'index.html',
-         			reportName: 'JacocoReport'
-         	    ])
-         		sh "./mvn jacocoTestCoverageVerification"
-         	}
-        }
-        stage('SonarQube analysis') {
-            steps {
-                withSonarQubeEnv('SonarQubePruebas') {
-                    sh './mvn sonarqube'
+                withMaven(maven : 'apache-maven-3.6.1') {
+                    bat 'mvn install'
                 }
             }
         }
