@@ -1,7 +1,7 @@
 #!groovy
 #!Especificar la ruta adecuada en cada caso
 node('main'){
-    #!Especificar la ruta adecuada en cada caso
+    --Especificar la ruta adecuada en cada caso
     def mavenFolfer = "C:/Users/{{user}}/.m2";
     stage('checkout') {
         #!Es necesario configurar la credenciales previamente en el jenkins
