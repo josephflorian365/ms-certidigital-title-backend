@@ -13,9 +13,8 @@ pipeline {
                    extensions: [[$class: 'CleanCheckout']],
                    submoduleCfg: [],
                    userRemoteConfigs: [
-                       [url: 'https://github.com/josephflorian365/ms-certidigital-title-backend.git', credentialsId: 'jenkins_github']
+                       [url: 'https://github.com/josephflorian365/ms-certidigital-title-backend.git']
                        ]]) 
-                 sh 'pwd'
                  sh'ls -l' 
               } //steps
             } //stage
