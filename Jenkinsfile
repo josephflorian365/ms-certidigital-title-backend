@@ -4,7 +4,7 @@ node('main'){
     def mavenFolfer = "C:/Users/{{user}}/.m2";
     stage('checkout') {
         # Es necesario configurar la credenciales previamente en el jenkins
-        git branch: 'main', credentialsId: 'GitLab', url: 'https://gitlab.sngular.com/sngulartech/devops_jenkins_and_docker'
+        git branch: 'main', credentialsId: 'GitLab', url: 'https://github.com/josephflorian365/ms-certidigital-title-backend'
     }
     stage('compile and save files'){
         dir("./demo-project") {
