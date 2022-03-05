@@ -1,17 +1,62 @@
 #!groovy
-
-pipeline {
-    agent any
-       tools {
-                 maven 'mavenTool'
-     }   
-    stages {
-    stage("checkout"){
-        steps {
-             checkout ([$class: 'GitsCM', branches: [[name: */main']], doGenerateSubmoduleConfigurations: false, extensions: [],
-             submodulecfg: [], userRemoteConfigs: [[credentialsId: 'josephflorian365',
-             url: "https://github.com/josephflorian365/ms-certidigital-title-backend.git"]]])
-      }
-     }
-    }
-   }
+pipeline{
+	agent any
+	// Definir la dirección del almacén
+	environment {
+		REPOSITORY="https://github.com/josephflorian365/ms-certidigital-title-backend.git"
+	}
+ 
+	stages {
+ 
+		 etapa ('Obtener código') {
+			steps {
+				echo "start fetch code from git:${REPOSITORY}"
+				 // Vaciar el directorio actual
+				deleteDir()
+				 // Tire del código	
+				git "${REPOSITORY}"
+			}
+		}
+ 
+		 etapa ('Código de verificación estática') {
+			steps {
+				 // Verificación de pseudocódigo
+				echo "start code check"
+			}
+		}		
+ 
+		 etapa ('compilar + prueba unitaria') {
+			steps {
+				echo "start compile"
+				 // Cambiar directorio
+				dir('sso-client1') {
+					 // reempaquetado
+					bat 'mvn -Dmaven.test.skip=true -U clean install'
+				}
+			}
+		}
+ 
+		 etapa ('Crear imagen') {
+			steps {
+				echo "start build image"
+				dir('sso-client1') {
+					 // construir imagen
+					bat 'docker build -t hub.c.163.com/longfeizheng/sso-client1:1.0 .'
+					 // Inicie sesión en 163 Cloud Warehouse
+					bat 'docker login -u longfei_zheng@163.com -p password hub.c.163.com'
+					 // Empuja el espejo hacia el almacén 163
+					bat 'docker push hub.c.163.com/longfeizheng/sso-client1:1.0'
+				}
+			}
+		}
+ 
+		 etapa ('Iniciar servicio') {
+			steps {
+				echo "start sso-merryyou"
+				 // Reiniciar el servicio
+				bat 'docker-compose up -d --build'
+			}
+		}				
+ 
+	}
+}
