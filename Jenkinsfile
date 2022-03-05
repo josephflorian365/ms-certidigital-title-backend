@@ -1,10 +1,6 @@
 #!groovy
 
 pipeline {
-    agent any
-       tools {
-                 maven 'maven-tool'
-     }   
     stages {
         
         stage("Git Clone"){
