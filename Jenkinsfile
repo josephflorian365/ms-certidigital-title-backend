@@ -1,31 +1,22 @@
 pipeline {
     agent any
-    triggers {
-        pollSCM('* * * * *')
+
+    tools {
+        maven "3.6.0" // You need to add a maven with name "3.6.0" in the Global Tools Configuration page
     }
+
     stages {
-        stage ('Compile Stage') {
-
+        stage("Build") {
             steps {
-                withMaven(maven : 'apache-maven-3.6.1') {
-                    bat 'mvn clean compile'
-                }
+                sh "mvn -version"
+                sh "mvn clean install"
             }
         }
-        stage ('Testing Stage') {
+    }
 
-            steps {
-                withMaven(maven : 'apache-maven-3.6.1') {
-                    bat 'mvn test'
-                }
-            }
-        }
-        stage ('Install Stage') {
-            steps {
-                withMaven(maven : 'apache-maven-3.6.1') {
-                    bat 'mvn install'
-                }
-            }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
