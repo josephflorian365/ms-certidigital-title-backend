@@ -1,10 +1,8 @@
 #!groovy
 #!Especificar la ruta adecuada en cada caso
 node('main'){
-    --Especificar la ruta adecuada en cada caso
     def mavenFolfer = "C:/Users/{{user}}/.m2";
     stage('checkout') {
-        #!Es necesario configurar la credenciales previamente en el jenkins
         git branch: 'main', credentialsId: 'GitLab', url: 'https://github.com/josephflorian365/ms-certidigital-title-backend'
     }
     stage('compile and save files'){
