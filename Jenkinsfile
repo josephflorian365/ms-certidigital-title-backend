@@ -8,7 +8,7 @@ pipeline{
  
 	stages {
  
-		 etapa ('Obtener código') {
+		 stage ('Obtener código') {
 			steps {
 				echo "start fetch code from git:${REPOSITORY}"
 				 // Vaciar el directorio actual
@@ -18,14 +18,14 @@ pipeline{
 			}
 		}
  
-		 etapa ('Código de verificación estática') {
+		 stage ('Código de verificación estática') {
 			steps {
 				 // Verificación de pseudocódigo
 				echo "start code check"
 			}
 		}		
  
-		 etapa ('compilar + prueba unitaria') {
+		 stage ('compilar + prueba unitaria') {
 			steps {
 				echo "start compile"
 				 // Cambiar directorio
@@ -36,7 +36,7 @@ pipeline{
 			}
 		}
  
-		 etapa ('Crear imagen') {
+		 stage ('Crear imagen') {
 			steps {
 				echo "start build image"
 				dir('sso-client1') {
@@ -50,7 +50,7 @@ pipeline{
 			}
 		}
  
-		 etapa ('Iniciar servicio') {
+		 stage ('Iniciar servicio') {
 			steps {
 				echo "start sso-merryyou"
 				 // Reiniciar el servicio
