@@ -8,7 +8,7 @@ pipeline {
             steps {
                 cleans()
                    checkout([$class: "GitSCM',
-                   branches: [[name: **/feature/sonarqube']],
+                   branches: [[name: '*/main']],
                    doGenerateSubmoduleConfigurations: false,
                    extensions: [[$class: 'CleanCheckout']],
                    submoduleCfg: [],
