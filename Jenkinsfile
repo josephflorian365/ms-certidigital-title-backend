@@ -1,4 +1,5 @@
 #!groovy
+#!Especificar la ruta adecuada en cada caso
 node('main'){
     #!Especificar la ruta adecuada en cada caso
     def mavenFolfer = "C:/Users/{{user}}/.m2";
