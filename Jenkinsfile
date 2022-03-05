@@ -1,27 +1,63 @@
 pipeline {
     agent any
+    environment {
+        DOCKERFILE = "Dockerfile.build"
+    }
+
     stages {
-        stage ('Compile Stage') {
+        stage("Build") {
+            environment {
+                MVN_COMMAND = "mvn clean package"
+                TEST_REPORTS = "target/surefire-reports/*.xml"
+            }
 
-            steps {
-                withMaven(maven : 'apache-maven-3.8.4') {
-                    bat 'mvn clean compile'
+            parallel {
+                stage("openjdk-8.0.232") {
+                    agent {
+                        dockerfile { 
+                            filename DOCKERFILE 
+                            additionalBuildArgs "--build-arg JAVA_VERSION=8.0.232-open -t maven:8.0.232-open" 
+                        }
+                    }
+                    steps {
+                        sh "${MVN_COMMAND} -P jdk8" 
+                    }
+                    post {
+                        always {
+                            junit TEST_REPORTS
+                        }
+                    }
+                }
+
+                stage("openjdk-11.0.5") {
+                    agent {
+                        dockerfile {
+                            filename DOCKERFILE
+                            additionalBuildArgs "--build-arg JAVA_VERSION=11.0.5-open -t maven:11.0.5-open"
+                        }
+                    }
+                    steps {
+                        sh "${MVN_COMMAND} -P jdk11"
+                    }
+                    post {
+                        always {
+                            junit TEST_REPORTS
+                        }
+                    }
                 }
             }
         }
-        stage ('Testing Stage') {
 
-            steps {
-                withMaven(maven : 'apache-maven-3.8.4') {
-                    bat 'mvn test'
+        stage("Install") {
+            agent {
+                dockerfile {
+                    filename DOCKERFILE
+                    additionalBuildArgs "--build-arg JAVA_VERSION=8.0.232-open"
+                    args '-v $HOME/.m2/repository:/home/jenkins/.m2/repository:rw,z' 
                 }
             }
-        }
-        stage ('Install Stage') {
             steps {
-                withMaven(maven : 'apache-maven-3.8.4') {
-                    bat 'mvn install'
-                }
+                sh "mvn -DskipTests install -P jdk8"
             }
         }
     }
