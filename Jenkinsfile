@@ -7,7 +7,7 @@ pipeline {
         stage("Git Clone"){
             steps {
                 cleans()
-                   checkout([$class: "GitSCM',
+                   checkout([$class: 'GitSCM',
                    branches: [[name: '*/main']],
                    doGenerateSubmoduleConfigurations: false,
                    extensions: [[$class: 'CleanCheckout']],
