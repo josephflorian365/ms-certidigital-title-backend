@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage("build project") {
             steps {
-               // git 'https://github.com/denizturkmen/SpringBootMysqlCrud.git'
+               // git 'https://github.com/josephflorian365/ms-certidigital-title-backend.git'
                 echo "Java VERSION"
                 sh 'java -version'
                 echo "Maven VERSION"
