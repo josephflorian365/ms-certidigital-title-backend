@@ -28,20 +28,11 @@ pipeline {
                         sh 'mvn clean install'
                 }
             }
-        
-            stage('SonarQube analysis 1') {
-            
-                steps {        
-                    withSonarQubeEnv(credentialsId: '21b09307d8b9e92b9e038e44e9c7590d15d8d060', installationName: 'My SonarQube Server') { // You can override the credential to be used
-                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                }
-                }
-            }
-        
+
             stage('SonarQube Analysis') {
                 agent any 
                 steps {
-                        sh 'mvn clean verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io - Dsonar.login=dc90bb680b6a532f5e283d94b2d8d5687d35ca4c'
+                        sh 'mvn clean verify sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=a426fdc6c4a00b5bbfbdda01350e548776e42ad2'
                     }
             }
     }
