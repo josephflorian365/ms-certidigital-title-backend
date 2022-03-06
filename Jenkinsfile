@@ -18,7 +18,7 @@ pipeline {
         }
         stage ('build app test') {
             steps {               
-                    sh 'mvn clean install -DskipTests=true '                                    
+                    sh 'mvn clean install -Dskip.unit-tests=true -Dskip.integration-tests=true -Dskip.end-to-end-tests=true'                                    
             }
         }
         
