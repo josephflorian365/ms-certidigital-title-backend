@@ -33,7 +33,7 @@ pipeline {
                 steps {
                 withSonarQubeEnv('SonarCloud') {
                 sh "./mvnw org.jacoco:jacoco-maven-plugin:prepare-agent verify \
-                sonar:sonar -Dsonar.branch.name=master
+                sonar:sonar -Dsonar.branch.name=master"
                     }
                }
             }
