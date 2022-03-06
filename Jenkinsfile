@@ -6,34 +6,34 @@ pipeline {
        
     }
     stages {
-        stage ('Checking java version') {
-            steps {
-                    sh 'java -version'
-            }
-        }
-        stage ('maven version') {
-            steps {               
-                    sh 'mvn -version'                
-            }
-        }
-        stage ('build app test') {
-            steps {               
-                    sh 'mvn clean install'                                    
-            }
-        }
+        stage("Git Clone"){ 
+            steps { 
+                cleansWs()
+                    checkout([$class: 'GitSCM', 
+                              branches: [[name: '*/feature/sonarqube']], 
+                              doGenerateSubmoduleConfigurations: false, 
+                              extensions: [[$class: 'CleanCheckout']], 
+                              submoduleCfg: [], 
+                              userRemoteConfigs: [
+                                    [url: 'https://github.com/vallegrande/A520153 TO2_Educasi.git', credentialsId: 'jenkins github']
+                                    ]]) 
+                           sh 'pwd
+                           sh'ls -l' 
+            } //steps 
+        } //stage
         
-        stage ('docker image build')
-        {
-            steps {
-                   
-                        sh 'mvn dockerfile:build'
-                         
-                  }
-          }
-          stage ('docker image push to Docker Hub') {
-            steps {               
-                    sh 'mvn dockerfile:push'                          
+            stage('Build Project') {
+                agent any 
+                steps {
+                        sh 'mvn clean install'
+                }
             }
-        }
+        
+            stage('SonarQube Analysis') {
+                agent any 
+                steps {
+                        sh 'mvn clean verify sonar:sonar -Dsonar.host.url=http://localhost:9000 - Dsonar.login=4cca8803902a0cdea51c45fba00b07369788e9e9'
+                    }
+            }
     }
 }
