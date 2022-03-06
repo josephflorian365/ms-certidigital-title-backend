@@ -10,12 +10,12 @@ pipeline {
             steps { 
                 cleansWs()
                     checkout([$class: 'GitSCM', 
-                              branches: [[name: '*/feature/sonarqube']], 
+                              branches: [[name: '*/main']], 
                               doGenerateSubmoduleConfigurations: false, 
                               extensions: [[$class: 'CleanCheckout']], 
                               submoduleCfg: [], 
                               userRemoteConfigs: [
-                                    [url: 'https://github.com/vallegrande/A520153 TO2_Educasi.git', credentialsId: 'jenkins github']
+                                    [url: 'https://github.com/josephflorian365/ms-certidigital-title-backend.git', credentialsId: 'jenkins github']
                                     ]]) 
                            sh 'pwd'
                            sh'ls -l' 
