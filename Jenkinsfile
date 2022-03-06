@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage("Git Clone"){ 
             steps { 
-                cleansWs()
+                cleanWs()
                     checkout([$class: 'GitSCM', 
                               branches: [[name: '*/main']], 
                               doGenerateSubmoduleConfigurations: false, 
