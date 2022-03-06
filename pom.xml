@@ -81,59 +81,11 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-	<profiles>
-		 <profile>
-            		<id>unit-test</id>
-            		<activation>
-                	<activeByDefault>true</activeByDefault>
-            		</activation>
-        	</profile>
-        	<profile>
-            		<id>integration-test</id>
-            		<properties>
-                		<skip.unit-tests>true</skip.unit-tests>
-                		<skip.integration-tests>false</skip.integration-tests>
-                		<skip.end-to-end-tests>true</skip.end-to-end-tests>
-            		</properties>
-        	</profile>
-	</profiles>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.4</version>
-				<executions>
-					<execution>
-						<id>build-image</id>
-						<phase>package</phase>
-						<goals>
-							<goal>build</goal>
-						</goals>
-						<configuration>
-							<mainClass>${start-class}</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<repository>${docker.image.prefix}/${project.artifactId}</repository>
-					<buildArgs>
-						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-					</buildArgs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-    				<artifactId>maven-surefire-plugin</artifactId>
-    				<version>${maven-surefire-plugin.version}</version>
-    				<configuration>
-        				<skipTests>${skip.unit-tests}</skipTests>
-    				</configuration>
 			</plugin>
 		</plugins>
 
