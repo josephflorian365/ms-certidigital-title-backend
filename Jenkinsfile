@@ -32,8 +32,16 @@ pipeline {
             stage('SonarQube analysis') {
                 steps {
                 withSonarQubeEnv('SonarCloud') {
-                sh "./mvnw org.jacoco:jacoco-maven-plugin:prepare-agent verify \
-                sonar:sonar -Dsonar.branch.name=master"
+                    
+                    def urlcomponents = env.CHANGE_URL.split("/")
+                    def org = urlcomponents[3]
+                    def repo = urlcomponents[4]
+                    
+                sh "./mvnw sonar:sonar \
+    -Dsonar.pullrequest.provider=GitHub \
+    -Dsonar.pullrequest.github.repository=${org}/${repo} \
+    -Dsonar.pullrequest.key=${env.CHANGE_ID} \
+    -Dsonar.pullrequest.branch=${env.CHANGE_BRANCH}"
                     }
                }
             }
