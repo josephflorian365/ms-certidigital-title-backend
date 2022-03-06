@@ -32,7 +32,7 @@ pipeline {
             stage('SonarQube analysis') {
                 steps {
                 withSonarQubeEnv('SonarQubePruebas')  { 
-                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.8.4:sonar'
+                sh 'mvn clean verify sonar:sonar'
                 }
                }
             }
