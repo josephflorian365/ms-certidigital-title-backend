@@ -17,7 +17,7 @@ pipeline {
                               userRemoteConfigs: [
                                     [url: 'https://github.com/vallegrande/A520153 TO2_Educasi.git', credentialsId: 'jenkins github']
                                     ]]) 
-                           sh 'pwd
+                           sh 'pwd'
                            sh'ls -l' 
             } //steps 
         } //stage
