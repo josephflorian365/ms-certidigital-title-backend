@@ -29,16 +29,10 @@ pipeline {
                 }
             }
         
-        stage('SonarQube analysis 1') {
-            steps {
-                    sh 'sonar-scanner'
-            }
-        }
-        
             stage('SonarQube Analysis') {
                 agent any 
                 steps {
-                        sh 'mvn clean verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ - Dsonar.login=dc90bb680b6a532f5e283d94b2d8d5687d35ca4c'
+                        sh 'mvn clean verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io - Dsonar.login=dc90bb680b6a532f5e283d94b2d8d5687d35ca4c'
                     }
             }
     }
