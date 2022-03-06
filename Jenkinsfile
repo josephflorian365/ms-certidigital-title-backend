@@ -29,6 +29,14 @@ pipeline {
                 }
             }
         
+        stage('SonarQube analysis 1') {
+            steps {
+                withSonarQubeEnv('SonarQubePruebas') {
+                    sh 'sonarqube'
+                }
+            }
+        }
+        
             stage('SonarQube Analysis') {
                 agent any 
                 steps {
