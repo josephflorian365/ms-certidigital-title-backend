@@ -31,9 +31,7 @@ pipeline {
         
         stage('SonarQube analysis 1') {
             steps {
-                withSonarQubeEnv('SonarQubePruebas') {
                     sh 'mvn package sonar:sonar'
-                }
             }
         }
         
