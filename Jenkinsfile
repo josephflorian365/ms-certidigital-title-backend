@@ -1,4 +1,5 @@
-node('main'){
+pipeline { 
+    agent any
     def mavenFolfer = "C:/Users/{{user}}/.m2";
     stage('checkout') {
         git branch: 'main', credentialsId: 'GitHub', url: 'https://github.com/josephflorian365/ms-certidigital-title-backend'
