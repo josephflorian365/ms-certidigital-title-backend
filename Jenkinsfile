@@ -1,4 +1,4 @@
-node('master'){
+node('main'){
     def mavenFolfer = "C:/Users/{{user}}/.m2";
     stage('checkout') {
         git branch: 'main', credentialsId: 'GitLab', url: 'https://github.com/josephflorian365/ms-certidigital-title-backend'
