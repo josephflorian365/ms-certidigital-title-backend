@@ -31,7 +31,7 @@ pipeline {
         
         stage('SonarQube analysis 1') {
             steps {
-                    sh 'mvn package sonar:sonar'
+                    sh 'sonar-scanner'
             }
         }
         
