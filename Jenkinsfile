@@ -1,7 +1,7 @@
 node('main'){
     def mavenFolfer = "C:/Users/{{user}}/.m2";
     stage('checkout') {
-        git branch: 'main', credentialsId: 'GitHub', url: 'https://github.com/josephflorian365/ms-certidigital-title-backend.git'
+        git branch: 'main', credentialsId: 'GitHub', url: 'https://github.com/josephflorian365/ms-certidigital-title-backend'
     }
     stage('compile and save files'){
         dir("./demo-project") {
