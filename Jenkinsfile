@@ -1,5 +1,10 @@
 pipeline {
     agent any
+     tools {
+        jdk 'jdk'
+        maven 'mavenTool'
+       
+    }
     stages {
         stage ('Checking java version') {
             steps {
