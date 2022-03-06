@@ -31,9 +31,10 @@ pipeline {
 
             stage('SonarQube analysis') {
                 steps {
-                withSonarQubeEnv('SonarQubePruebas')  { 
-                sh 'mvn clean verify sonar:sonar'
-                }
+                withSonarQubeEnv('SonarCloud') {
+                sh "./mvnw org.jacoco:jacoco-maven-plugin:prepare-agent verify \
+                sonar:sonar -Dsonar.branch.name=master
+                    }
                }
             }
     }
