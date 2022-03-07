@@ -31,19 +31,13 @@ pipeline {
 
             stage('SonarQube analysis') {
                 steps {
-                withSonarQubeEnv('SonarCloud') {
-                    
-                    def urlcomponents = env.CHANGE_URL.split("/")
-                    def org = urlcomponents[3]
-                    def repo = urlcomponents[4]
-                    
-                sh "./mvnw sonar:sonar \
-    -Dsonar.pullrequest.provider=GitHub \
-    -Dsonar.pullrequest.github.repository=${org}/${repo} \
-    -Dsonar.pullrequest.key=${env.CHANGE_ID} \
-    -Dsonar.pullrequest.branch=${env.CHANGE_BRANCH}"
-                    }
-               }
+                script {
+          def scannerHome = tool 'sonarscan';
+          withSonarQubeEnv('sonarqube') {
+            sh "${tool("sonarscan ")}/bin/sonar-scanner -Dsonar.projectKey=reactapp -Dsonar.projectName=reactapp"
+          }
+        }
+            }
             }
     }
 }
