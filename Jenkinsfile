@@ -31,12 +31,15 @@ pipeline {
 
             stage('SonarQube analysis') {
                 steps {
-               node {
-              withSonarQubeEnv('SonarQubePruebas') {
-                 sh 'mvn clean package sonar:sonar'
-              }
-          }
-            }
-            }
+                    script{
+                        def scannerHome = tool 'sonarscan';
+                    withSonarQubeEnv('sonarqube') {
+                        sh "${tool("sonarscan")}/bin/sonar-scanner \
+                            -Dsonar.projectKey=reactapp \
+                            -Dsonar.projectName=reactapp"
+                                         }
+                                }
+                        }
+                }
     }
 }
