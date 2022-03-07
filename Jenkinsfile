@@ -33,7 +33,7 @@ pipeline {
                 steps {
                     script{
                         def scannerHome = tool 'SonarQubePruebas';
-                    withSonarQubeEnv('sonarqube') {
+                    withSonarQubeEnv('SonarQubePruebas') {
                         sh "${tool("SonarQubePruebas")}/bin/sonar-scanner \
                             -Dsonar.projectKey=springapp \
                             -Dsonar.projectName=springapp"
