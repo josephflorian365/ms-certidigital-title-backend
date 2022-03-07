@@ -28,7 +28,18 @@ pipeline {
                         sh 'mvn clean install'
                 }
             }
-
+            stage('SonarQube Analysis1') {
+                agent any 
+                steps {
+                    withSonarQubeEnv('SonarQubePruebas') {
+                         // Tenga en cuenta que los parámetros en withSonarQubeEnv () deben ser los mismos que la configuración de Nombre en los servidores SonarQube antes
+            withMaven(maven: 'mavenTool') {
+                                 sh "mvn clean package -Dsonar.host.url=http://localhost:9000 -Dsonar.login=a426fdc6c4a00b5bbfbdda01350e548776e42ad2"
+            }
+        }
+                }
+               }
+        
             stage('SonarQube Analysis') {
                 agent any 
                 steps {
