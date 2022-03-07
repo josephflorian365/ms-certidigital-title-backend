@@ -29,6 +29,12 @@ pipeline {
                 }
             }
         
+        stage( 'SonarQube Analysis') {
+     def mvnHone = tool name: 'mavenTool', type: 'maven'
+     withSonarQubeEnv('SonarQubePruebas') {
+       sh "S{nvnHone}/bin/mvn sonar: sonar"
+        }
+        
             stage('SonarQube Analysis') {
                 agent any 
                 steps {
