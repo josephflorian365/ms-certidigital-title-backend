@@ -34,6 +34,7 @@ pipeline {
      withSonarQubeEnv('SonarQubePruebas') {
        sh "S{nvnHone}/bin/mvn sonar: sonar"
         }
+        }
         
             stage('SonarQube Analysis') {
                 agent any 
