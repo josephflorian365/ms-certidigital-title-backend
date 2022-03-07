@@ -31,8 +31,10 @@ pipeline {
         
         stage( 'SonarQube Analysis1') {
      def mvnHone = tool name: 'mavenTool', type: 'maven'
+            steps {
      withSonarQubeEnv('SonarQubePruebas') {
        sh "S{nvnHone}/bin/mvn sonar: sonar"
+        }
         }
         }
         
