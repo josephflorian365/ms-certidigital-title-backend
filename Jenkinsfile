@@ -31,12 +31,11 @@ pipeline {
 
             stage('SonarQube analysis') {
                 steps {
-                script {
-          def scannerHome = tool 'sonarscan';
-          withSonarQubeEnv('SonarQubePruebas') {
-            sh "${tool("sonarscan ")}/bin/sonar-scanner -Dsonar.projectKey=springapp -Dsonar.projectName=springapp"
+               node {
+              withSonarQubeEnv('My SonarQube Server') {
+                 sh 'mvn clean package sonar:sonar'
+              }
           }
-        }
             }
             }
     }
