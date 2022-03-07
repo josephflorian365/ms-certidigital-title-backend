@@ -32,11 +32,11 @@ pipeline {
             stage('SonarQube analysis') {
                 steps {
                     script{
-                        def scannerHome = tool 'sonarscan';
+                        def scannerHome = tool 'SonarQubePruebas';
                     withSonarQubeEnv('sonarqube') {
-                        sh "${tool("sonarscan")}/bin/sonar-scanner \
-                            -Dsonar.projectKey=reactapp \
-                            -Dsonar.projectName=reactapp"
+                        sh "${tool("SonarQubePruebas")}/bin/sonar-scanner \
+                            -Dsonar.projectKey=springapp \
+                            -Dsonar.projectName=springapp"
                                          }
                                 }
                         }
