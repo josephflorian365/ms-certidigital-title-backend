@@ -32,7 +32,7 @@ pipeline {
             stage('SonarQube Analysis') {
                 agent any 
                 steps {
-                    sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=a426fdc6c4a00b5bbfbdda01350e548776e42ad2'
+                    sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://ec2-44-203-160-37.compute-1.amazonaws.com:9000 -Dsonar.login=72feaeaf0512a2c00484fbe00e24dccef76fccb7'
                 }
                }
     }
